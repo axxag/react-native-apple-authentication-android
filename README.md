@@ -2,11 +2,7 @@
 
 ## Getting started
 
-`$ npm install react-native-apple-authentication-android --save`
-
-### Mostly automatic installation
-
-`$ react-native link react-native-apple-authentication-android`
+`$ yarn add react-native-apple-authentication-android`
 
 ## Usage
 
@@ -19,7 +15,7 @@ from 'react-native-apple-authentication-android';
 AppleAuthenticationAndroid.configure({
   clientId: 'Your client ID',
   redirectUri: 'Your redirect URI',
-  scope: 'Preferred scope'; // defaults to 'email name'
+  scope: 'Preferred scope'; // OPTIONAL - defaults to 'email name'
 })
 
 // Sign In with Apple
