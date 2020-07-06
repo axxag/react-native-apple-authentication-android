@@ -27,7 +27,7 @@ const signInWithApple = async () => {
     if (error && error.message) {
       switch (error.message) {
         case NOT_CONFIGURED_ERROR:
-          console.log('RNAppleAuthAndroid not configured yet.')
+          console.log('AppleAuthenticationAndroid not configured yet.')
         break
         case SIGNIN_FAILED_ERROR:
           console.log('Apple signin failed.')
