@@ -6,7 +6,7 @@
 
 ## Service setup
 
-First, follow Apple's instructions to set up Sign In with Apple in your iOS app and for a web service. It is the web service setup that you'll use from Android, but you need both.
+First, follow Apple's instructions to set up Sign In with Apple in your iOS app](https://help.apple.com/developer-account/#/devde676e696) and [for a web service](https://help.apple.com/developer-account/#/dev1c0e25352). It is the web service setup that you'll use from Android, but you need both.
 
     More setup is necessary for backend operations, but the above is all you need to use this library. For more detail, you can read Aaron Parecki's walkthrough, What the Heck is Sign In with Apple?
 
