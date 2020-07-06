@@ -17,9 +17,9 @@ from 'react-native-apple-authentication-android';
 
 // Initialize the module
 AppleAuthenticationAndroid.configure({
-	clientId: 'Your client ID',
+  clientId: 'Your client ID',
   redirectUri: 'Your redirect URI',
-	scope: 'Preferred scope'; // defaults to 'email name'
+  scope: 'Preferred scope'; // defaults to 'email name'
 })
 
 // Sign In with Apple
