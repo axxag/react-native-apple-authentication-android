@@ -21,7 +21,7 @@ AppleAuthenticationAndroid.configure({
 // Sign In with Apple
 const signInWithApple = async () => {
   try {
-    const authorizationCode = await RNAppleAuthAndroid.signIn()
+    const authorizationCode = await AppleAuthenticationAndroid.signIn()
     console.log('Got auth code', authorizationCode)
   } catch (error) {
     if (error && error.message) {
