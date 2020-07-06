@@ -1,14 +1,15 @@
 {
   "name": "react-native-apple-authentication-android",
   "title": "React Native Apple Authentication Android",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Authenticate users with appleid on android.",
   "main": "index.js",
   "typings": "typings/react-native-apple-authentication-android.d.ts",
   "files": [
     "README.md",
     "android",
-    "index.js"
+    "index.js",
+    "typings"
   ],
   "author": {
     "username": "alexxgent",
