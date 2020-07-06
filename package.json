@@ -1,7 +1,7 @@
 {
   "name": "react-native-apple-authentication-android",
   "title": "React Native Apple Authentication Android",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Authenticate users with appleid on android.",
   "main": "index.js",
   "typings": "typings/react-native-apple-authentication-android.d.ts",
@@ -10,6 +10,10 @@
     "android",
     "index.js"
   ],
+  "author": {
+    "username": "alexxgent",
+    "name": "Alex Gentile"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
