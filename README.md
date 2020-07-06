@@ -4,7 +4,7 @@
 
 `$ yarn add react-native-apple-authentication-android`
 
-### Service setup
+## Service setup
 
 First, follow Apple's instructions to set up Sign In with Apple in your iOS app and for a web service. It is the web service setup that you'll use from Android, but you need both.
 
