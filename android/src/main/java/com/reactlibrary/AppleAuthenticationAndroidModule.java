@@ -7,11 +7,13 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentActivity;
 
+import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableMap;
+import com.facebook.react.bridge.WritableMap;
 
 import com.willowtreeapps.signinwithapplebutton.SignInWithAppleCallback;
 import com.willowtreeapps.signinwithapplebutton.SignInWithAppleConfiguration;
@@ -43,10 +45,25 @@ public class AppleAuthenticationAndroidModule extends ReactContextBaseJavaModule
 
     @Override
     public Map<String, Object> getConstants() {
+        final Map<String, Object> ResponseType = new HashMap<>();
+        ResponseType.put("ALL", SignInWithAppleConfiguration.ResponseType.ALL.toString());
+        ResponseType.put("CODE",  SignInWithAppleConfiguration.ResponseType.CODE.toString());
+        ResponseType.put("ID_TOKEN",  SignInWithAppleConfiguration.ResponseType.ID_TOKEN.toString());
+
+        final Map<String, Object> Scope = new HashMap<>();
+        Scope.put("ALL", SignInWithAppleConfiguration.Scope.ALL.toString());
+        Scope.put("EMAIL",  SignInWithAppleConfiguration.Scope.EMAIL.toString());
+        Scope.put("NAME",  SignInWithAppleConfiguration.Scope.NAME.toString());
+
         final Map<String, Object> constants = new HashMap<>();
         constants.put(E_NOT_CONFIGURED_ERROR, E_NOT_CONFIGURED_ERROR);
         constants.put(E_SIGNIN_FAILED_ERROR, E_SIGNIN_FAILED_ERROR);
         constants.put(E_SIGNIN_CANCELLED_ERROR, E_SIGNIN_CANCELLED_ERROR);
+
+        constants.put("ResponseType", ResponseType);
+        constants.put("Scope", Scope);
+
+
         return constants;
     }
 
@@ -63,7 +80,8 @@ public class AppleAuthenticationAndroidModule extends ReactContextBaseJavaModule
     public void configure(ReadableMap configObject) {
         String clientId = "";
         String redirectUri = "";
-        String scope = "email name";
+        SignInWithAppleConfiguration.Scope scope = SignInWithAppleConfiguration.Scope.ALL;
+        SignInWithAppleConfiguration.ResponseType responseType = SignInWithAppleConfiguration.ResponseType.ALL;
 
         if (configObject.hasKey("clientId")) { 
             clientId = configObject.getString("clientId");
@@ -74,13 +92,24 @@ public class AppleAuthenticationAndroidModule extends ReactContextBaseJavaModule
         }
 
         if (configObject.hasKey("scope")) { 
-            scope = configObject.getString("scope");
+            String scopeString = configObject.getString("scope");
+            if (scopeString != null) {
+                scope = SignInWithAppleConfiguration.Scope.valueOf(scopeString);
+            }
+        }
+
+        if (configObject.hasKey("responseType")) { 
+            String responseTypeString = configObject.getString("responseType");
+            if (responseTypeString != null) {
+                responseType = SignInWithAppleConfiguration.ResponseType.valueOf(responseTypeString);
+            }
         }
 
         this.configuration = new SignInWithAppleConfiguration.Builder()
             .clientId(clientId)
             .redirectUri(redirectUri)
-            .scope(scope)
+            .responseType(SignInWithAppleConfiguration.ResponseType.ALL)
+            .scope(SignInWithAppleConfiguration.Scope.ALL)
             .build();
     }
 
@@ -100,8 +129,11 @@ public class AppleAuthenticationAndroidModule extends ReactContextBaseJavaModule
 
         SignInWithAppleCallback callback = new SignInWithAppleCallback() {
             @Override
-            public void onSignInWithAppleSuccess(@NonNull String authorizationCode) {
-                promise.resolve(authorizationCode);
+            public void onSignInWithAppleSuccess(@NonNull String authorizationCode, @NonNull String idToken) {
+                WritableMap response = Arguments.createMap();
+                response.putString("authorizationCode", authorizationCode);
+                response.putString("idToken", idToken);
+                promise.resolve(response);
             }
 
             @Override

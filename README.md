@@ -27,26 +27,37 @@ From this setup, you will need two OAuth arguments to use this library:
 
     We recommend you use an https:// address for your redirect URI. If you use an http:// address, you may need to include a security configuration to allow cleartext traffic. Although this library should intercept the redirect request, you should regard this as a less secure option. If it's necessary, see the Network security configuration documentation for instructions on setting up a security configuration. Add that file to your Manifest's <application> tag using the attribute android:android:networkSecurityConfig.
 
-
 ## Usage
 
 ```javascript
 import AppleAuthenticationAndroid,
-{NOT_CONFIGURED_ERROR, SIGNIN_FAILED_ERROR, SIGNIN_CANCELLED_ERROR}
+  {
+    NOT_CONFIGURED_ERROR,
+    SIGNIN_CANCELLED_ERROR,
+    SIGNIN_FAILED_ERROR,
+    ResponseType,
+    Scope,
+  }
 from 'react-native-apple-authentication-android';
 
 // Initialize the module
 AppleAuthenticationAndroid.configure({
   clientId: 'Your client ID',
   redirectUri: 'Your redirect URI',
-  scope: 'Preferred scope'; // OPTIONAL - defaults to 'email name'
+  scope: Scope.ALL; // OPTIONAL - Scope.ALL (DEFAULT) = 'email name'; Scope.Email = 'email'; Scope.Name = 'name';
+  responseType: ResponseType.ALL; // OPTIONAL - ResponseType.ALL (DEFAULT) = 'code id_token'; ResponseType.CODE = 'code'; ResponseType.ID_TOKEN = 'id_token';
 })
 
 // Sign In with Apple
 const signInWithApple = async () => {
   try {
-    const authorizationCode = await AppleAuthenticationAndroid.signIn()
-    console.log('Got auth code', authorizationCode)
+    const response = await AppleAuthenticationAndroid.signIn()
+    if (response) {
+      const code = response.code // Available if selected ResponseType.ALL / ResponseType.CODE
+      const id_token = response.id_token // Available if selected ResponseType.ALL / ResponseType.ID_TOKEN
+      console.log('Got auth code', code)
+      console.log('Got id_token', id_token)
+    }
   } catch (error) {
     if (error && error.message) {
       switch (error.message) {
@@ -71,4 +82,5 @@ const signInWithApple = async () => {
 ```
 
 ## Credits
+
 This library is based on https://github.com/willowtreeapps/sign-in-with-apple-button-android. As such, it shares its dependencies and some setup instructions.
