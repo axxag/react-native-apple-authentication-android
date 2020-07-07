@@ -44,8 +44,18 @@ from 'react-native-apple-authentication-android';
 AppleAuthenticationAndroid.configure({
   clientId: 'Your client ID',
   redirectUri: 'Your redirect URI',
-  scope: Scope.ALL; // OPTIONAL - Scope.ALL (DEFAULT) = 'email name'; Scope.Email = 'email'; Scope.Name = 'name';
-  responseType: ResponseType.ALL; // OPTIONAL - ResponseType.ALL (DEFAULT) = 'code id_token'; ResponseType.CODE = 'code'; ResponseType.ID_TOKEN = 'id_token';
+  
+  // [OPTIONAL]
+  // Scope.ALL (DEFAULT) = 'email name'
+  // Scope.Email = 'email';
+  // Scope.Name = 'name';  
+  scope: Scope.ALL,
+  
+  // [OPTIONAL]
+  // ResponseType.ALL (DEFAULT) = 'code id_token'; 
+  // ResponseType.CODE = 'code';
+  // ResponseType.ID_TOKEN = 'id_token';
+  responseType: ResponseType.ALL, 
 })
 
 // Sign In with Apple
@@ -53,8 +63,8 @@ const signInWithApple = async () => {
   try {
     const response = await AppleAuthenticationAndroid.signIn()
     if (response) {
-      const code = response.code // Available if selected ResponseType.ALL / ResponseType.CODE
-      const id_token = response.id_token // Available if selected ResponseType.ALL / ResponseType.ID_TOKEN
+      const code = response.code // Present if selected ResponseType.ALL / ResponseType.CODE
+      const id_token = response.id_token // Present if selected ResponseType.ALL / ResponseType.ID_TOKEN
       console.log('Got auth code', code)
       console.log('Got id_token', id_token)
     }
