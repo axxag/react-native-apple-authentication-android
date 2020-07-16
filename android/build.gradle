@@ -14,7 +14,7 @@ def DEFAULT_COMPILE_SDK_VERSION = 28
 def DEFAULT_BUILD_TOOLS_VERSION = '28.0.3'
 def DEFAULT_MIN_SDK_VERSION = 16
 def DEFAULT_TARGET_SDK_VERSION = 28
-def DEFAULT_KOTLIN_VERSION = '1.3.61'
+def DEFAULT_KOTLIN_VERSION = '1.3.61' // IMPORTANT: this is also manually set in buildscript since it is evaluated first
 
 def safeExtGet(prop, fallback) {
     rootProject.ext.has(prop) ? rootProject.ext.get(prop) : fallback
@@ -24,8 +24,8 @@ apply plugin: 'com.android.library'
 apply plugin: 'maven'
 
 buildscript {
-    // Buildscript is evaluated before everything else so we can't use getExtOrDefault
-    def kotlin_version = rootProject.ext.has('kotlinVersion') ? rootProject.ext.get('kotlinVersion') : DEFAULT_KOTLIN_VERSION
+    // Buildscript is evaluated before everything else so we can't use safeExtGet or DEFAULT_KOTLIN_VERSION
+    def kotlin_version = rootProject.ext.has('kotlinVersion') ? rootProject.ext.get('kotlinVersion') :  '1.3.61' // DEFAULT_KOTLIN_VERSION
   
     // The Android Gradle plugin is only required when opening the android folder stand-alone.
     // This avoids unnecessary downloads and potential conflicts when the library is included as a
@@ -77,6 +77,16 @@ repositories {
     jcenter()
 }
 
+allprojects {
+    repositories {
+        maven { url "https://jitpack.io" }
+    }
+}
+
+configurations.all {
+    resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
+}
+
 def kotlin_version = safeExtGet('kotlinVersion', DEFAULT_KOTLIN_VERSION)
 
 dependencies {
@@ -84,7 +94,7 @@ dependencies {
     implementation 'com.facebook.react:react-native:+'  // From node_modules
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
-    implementation 'com.github.khaledshamieh:signIn-with-apple:0.4'
+    implementation 'com.github.axxag:sign-in-with-apple-button-android:master-SNAPSHOT'
 }
 
 def configureReactNativePom(def pom) {

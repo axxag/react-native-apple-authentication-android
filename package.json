@@ -1,7 +1,7 @@
 {
   "name": "react-native-apple-authentication-android",
   "title": "React Native Apple Authentication Android",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Authenticate users with appleid on android.",
   "main": "index.js",
   "typings": "typings/react-native-apple-authentication-android.d.ts",
@@ -36,5 +36,13 @@
   "devDependencies": {
     "react": "^16.9.0",
     "react-native": "^0.61.5"
+  },
+  "resolutions": {
+    "logkitty": "^0.7.1"
+  },
+  "comments": {
+    "resolutions": {
+      "logkitty": "https://github.com/advisories/GHSA-v8v8-6859-qxm4"
+    }
   }
 }

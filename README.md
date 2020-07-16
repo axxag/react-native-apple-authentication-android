@@ -30,65 +30,63 @@ From this setup, you will need two OAuth arguments to use this library:
 ## Usage
 
 ```javascript
-import AppleAuthenticationAndroid,
-  {
-    NOT_CONFIGURED_ERROR,
-    SIGNIN_CANCELLED_ERROR,
-    SIGNIN_FAILED_ERROR,
-    ResponseType,
-    Scope,
-  }
-from 'react-native-apple-authentication-android';
+import AppleAuthenticationAndroid, {
+  NOT_CONFIGURED_ERROR,
+  SIGNIN_CANCELLED_ERROR,
+  SIGNIN_FAILED_ERROR,
+  ResponseType,
+  Scope,
+} from "react-native-apple-authentication-android";
 
 // Initialize the module
 AppleAuthenticationAndroid.configure({
-  clientId: 'Your client ID',
-  redirectUri: 'Your redirect URI',
-  
+  clientId: "Your client ID",
+  redirectUri: "Your redirect URI",
+
   // [OPTIONAL]
   // Scope.ALL (DEFAULT) = 'email name'
   // Scope.Email = 'email';
-  // Scope.Name = 'name';  
+  // Scope.Name = 'name';
   scope: Scope.ALL,
-  
+
   // [OPTIONAL]
-  // ResponseType.ALL (DEFAULT) = 'code id_token'; 
+  // ResponseType.ALL (DEFAULT) = 'code id_token';
   // ResponseType.CODE = 'code';
   // ResponseType.ID_TOKEN = 'id_token';
-  responseType: ResponseType.ALL, 
-})
+  responseType: ResponseType.ALL,
+});
 
 // Sign In with Apple
 const signInWithApple = async () => {
   try {
-    const response = await AppleAuthenticationAndroid.signIn()
+    const response = await AppleAuthenticationAndroid.signIn();
     if (response) {
-      const code = response.code // Present if selected ResponseType.ALL / ResponseType.CODE
-      const id_token = response.id_token // Present if selected ResponseType.ALL / ResponseType.ID_TOKEN
-      console.log('Got auth code', code)
-      console.log('Got id_token', id_token)
+      const code = response.code; // Present if selected ResponseType.ALL / ResponseType.CODE
+      const id_token = response.id_token; // Present if selected ResponseType.ALL / ResponseType.ID_TOKEN
+      const user = response.user; // Present when user first logs in using appleid
+      console.log("Got auth code", code);
+      console.log("Got id_token", id_token);
+      console.log("Got user", user);
     }
   } catch (error) {
     if (error && error.message) {
       switch (error.message) {
         case NOT_CONFIGURED_ERROR:
-          console.log('AppleAuthenticationAndroid not configured yet.')
-        break
+          console.log("AppleAuthenticationAndroid not configured yet.");
+          break;
         case SIGNIN_FAILED_ERROR:
-          console.log('Apple signin failed.')
-        break
+          console.log("Apple signin failed.");
+          break;
         case SIGNIN_CANCELLED_ERROR:
-          console.log('User cancelled apple signin.')
-        break
+          console.log("User cancelled apple signin.");
+          break;
 
         default:
-        break;
+          break;
       }
     }
   }
-}
-
-
+};
 ```
 
 ## Credits

@@ -20,6 +20,8 @@ import com.willowtreeapps.signinwithapplebutton.SignInWithAppleConfiguration;
 import com.willowtreeapps.signinwithapplebutton.SignInWithAppleResult;
 import com.willowtreeapps.signinwithapplebutton.SignInWithAppleService;
 
+import org.json.JSONObject;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -129,10 +131,35 @@ public class AppleAuthenticationAndroidModule extends ReactContextBaseJavaModule
 
         SignInWithAppleCallback callback = new SignInWithAppleCallback() {
             @Override
-            public void onSignInWithAppleSuccess(@NonNull String authorizationCode, @NonNull String idToken) {
+            public void onSignInWithAppleSuccess(@NonNull String code, @NonNull String id_token, @NonNull String state, @NonNull String user) {
                 WritableMap response = Arguments.createMap();
-                response.putString("authorizationCode", authorizationCode);
-                response.putString("idToken", idToken);
+                response.putString("code", code);
+                response.putString("id_token", id_token);
+                response.putString("state", state);
+                try {
+                    JSONObject userJSON = new JSONObject(user);
+                    WritableMap userMap = Arguments.createMap();
+                    if (userJSON.has("name")) {
+                        JSONObject nameJSON = userJSON.getJSONObject("name");
+                        WritableMap nameMap = Arguments.createMap();
+                        if (nameJSON.has("firstName")) {
+                            nameMap.putString("firstName", nameJSON.getString("firstName"));
+                        }
+                        if (nameJSON.has("lastName")) {
+                            nameMap.putString("lastName", nameJSON.getString("lastName"));
+                        }
+                        if (nameMap.hasKey("firstName") || nameMap.hasKey("lastName")) {
+                            userMap.putMap("name", nameMap);
+                        }
+                    }
+                    if (userJSON.has("email")) {
+                        userMap.putString("email", userJSON.getString("email"));
+                    }
+                    if (userMap.hasKey("name") || userMap.hasKey("email")) {
+                        response.putMap("user", userMap);
+                    }
+                } catch (Exception e) {
+                }
                 promise.resolve(response);
             }
 

@@ -37,9 +37,22 @@ declare module "react-native-apple-authentication-android" {
     responseType?: ResponseTypeEnum;
     scope?: ScopeEnum;
   }
+
+  interface ISigninResponseUser {
+    name?: { firstName?: string; lastName?: string };
+    email?: string;
+  }
+
+  interface ISigninResponse {
+    user?: ISigninResponseUser;
+    state?: string;
+    id_token?: string;
+    code?: string;
+  }
+
   interface IRNAppleAuthAndroid {
     configure(configObject: IRNAppleAuthAndroidConfig): void;
-    signIn(): Promise<string>;
+    signIn(): Promise<ISigninResponse>;
   }
   const RNAppleAuthAndroid: IRNAppleAuthAndroid;
   export default RNAppleAuthAndroid;
