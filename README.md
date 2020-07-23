@@ -4,6 +4,16 @@
 
 `$ yarn add react-native-apple-authentication-android`
 
+
+`android/build.gradle`
+```diff
+buildscript {
+    dependencies {
++        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.61"
+    }
+}
+```
+
 ## Service setup
 
 First, follow Apple's instructions to set up Sign In with Apple [in your iOS app](https://help.apple.com/developer-account/#/devde676e696) and [for a web service](https://help.apple.com/developer-account/#/dev1c0e25352). It is the web service setup that you'll use from Android, but you need both.
